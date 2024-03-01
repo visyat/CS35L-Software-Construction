@@ -1,0 +1,99 @@
+Vishal Yathish
+CS 35L
+
+			     Assignment 1
+
+Lab 1.1
+---------------------------------------------------------------------------------------
+10. I was able to complete this section without using any of the arrow keys. I only used Emacs' C-s and C-r searching functions (questions 1-7), and C-a and C-e to move to the front and back of the line respectively (questions 8-9).
+
+Lab 1.3
+---------------------------------------------------------------------------------------
+6. The first remaining non-ASCII character is '，' - FULLWIDTH COMMA.
+
+Lab 1.4
+---------------------------------------------------------------------------------------
+8. I found 7 instances of the string <ol>.
+
+Lab 1.5: Exploring the operating system outside Emacs
+---------------------------------------------------------------------------------------
+1. The sh and type commands can be found in usr/bin. sleep is found in usr/local/cs/bin (found using $ which sleep).
+
+2. There were two executable programs that fit the description. I saved the output of /usr/bin $ls to a txt file ($ ls >bin-output.txt) and used regular expression search in Emacs ^se[a-z]$. 
+* sed - stream/text editor; used to perform basic filtering and text transformation operations on an input stream (file or direct text input) 
+* seq - print a sequence of numbers vertically, with a new-line character between each integer; can provide upper or lower bound
+
+3. The file ../emacs-29.1/bin/emacs-29.1 is actually executed; this can be shown through the command $ls -l /usr/local/cs/bin/emacs, which displays information for the file the symbolic link references.  
+
+4. /usr/bin/gcc (found using $/usr/bin/gcc --version) has a version number of 8.5.0. The plain gcc program has a version number of 13.2.0 (found using $gcc --version). This is because gcc is a symbolic link to /usr/local/cs/bin/gcc, which is an entirely separate file and is updated/maintained separately. 
+
+5. The symbolic mode u+sx,o-w adds permissions to the user that owns the file (allowing them to execute and search for the file, and allows them to execute the file with the userid of the owner -- a bit redundant in this case), and takes away writing permissions from other users not in the file group. This can be found using $ man chmod
+
+6. $ find /usr/local/cs -newer /usr/local/cs/lib -type d | sort -d | head -n 5
+/usr/local/cs
+/usr/local/cs/autoconf-2.72
+/usr/local/cs/autoconf-2.72/bin
+/usr/local/cs/autoconf-2.72/share
+/usr/local/cs/autoconf-2.72/share/autoconf
+
+7. $ find /usr/local/cs/src/python/Python-* -type f | wc -l
+9841
+
+8. $ find /usr/local/cs/bin -type l | wc -l
+371
+
+9. $ ls /usr/lib64 -atr | head -n 1
+libbz2.so.1
+
+10. C-h a RET transpose 
+transpose-chars               C-t
+  Interchange characters around point, moving forward one character.
+transpose-lines               C-x C-t
+  Exchange current line and previous line, leaving point after both.
+transpose-paragraphs          M-x ... RET
+  Interchange the current paragraph with the next one.
+transpose-regions             M-x ... RET
+  Transpose region STARTR1 to ENDR1 with STARTR2 to ENDR2.
+transpose-sentences           M-x ... RET
+  Interchange the current sentence with the next one.
+transpose-sexps               C-M-t
+  Like \[transpose-chars] (`transpose-chars'), but applies to sexps.
+transpose-words               M-t
+  Interchange words around point, leaving point at end of them.
+
+11. The emacs yank function is the equivalent of a paste feature in other text editors. It allows text that has been killed (using C-k), cut (using C-w), or copied (using M-w) to be reinserted at the current position of the cursor. It can be easily invoked using C-y.
+
+12. Refer to q12script.sh for my shell script. The output was as follows:
+Log-in Shell:
+    PID COMMAND
+2428010 -bash
+
+Ancestor Processes: 
+2428008 sshd: yathish@pts/59
+2427981 sshd: yathish [priv]
+   1235 /usr/sbin/sshd
+      1 /usr/lib/systemd/systemd --switched-root --system --deserialize 18
+
+Descendant Processes: 
+2432706 /bin/sh ./q12script.sh
+2432725 ps -o pid,args --no-headers --ppid 2432706
+
+Lab 1.6
+---------------------------------------------------------------------------------------
+1. M-x make-directory RET cs35L-lab1
+3. M-x compile RET gcc -o hello hello.c
+4. M-! ./hello 1>hello-a1 2>hello-a2
+5. M-! ./hello <&- 1>hello-b1 2>hello-b2
+6. M-! ./hello </etc/passwd 1>hello-c1 2>hello-c2
+7. M-! ./hello </etc/passwd 1>dev/full 2>hello-d2
+
+Homework
+---------------------------------------------------------------------------------------
+* tr -c 'A-Za-z' '[\n*]' : changes every non-letter character (integers, punctuation marks, etc.) into a new line character; having each word on separate line of a file
+* tr -cs 'A-Za-z' '[\n*]' : squeezes together the duplicate new line characters, so that there are no longer large gaps between words
+* tr -cs 'A-Za-z' '[\n*]' | sort : sorts the listed words in alphabetical order
+* tr -cs 'A-Za-z' '[\n*]' | sort -u : gets rid of duplicate words
+* tr -cs 'A-Za-z' '[\n*]' | sort -u | comm - sorted.words : compares each word to the contents of sorted.words (sees if the word can be found in that file). Words that are unique to input file 1 are in the first column, words unique to sorted.words are in the second column, and words shared by both are in the third column (significantly more of the latter two).
+* tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 - sorted.words : gets rid of the last two columns; shows only the words unique to the input file.
+
+The major issue is that when initially parsing through the input words, the $ tr -cs command separates valid words based on non-letter characters (e.g. dashes). Thus, the script artificially creates new mispelled words, which is why running this on linux.words does not produce empty output. 

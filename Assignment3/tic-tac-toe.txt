@@ -1,0 +1,27 @@
+Vishal Yathish
+
+			     Tic-Tac-Toe
+
+* Downloaded the sandbox zip archive from the tutorial website; tried running npm install & npm update (was having some issues with files being over-written on my local system and old/outdated files being called, so used sudo to get around this -- I understand that this is unsafe, and I will try to find an alternative solution should this come up in future; this was a quick fix to try to get a first iteration running) 
+
+* Started working on App.js ...
+* Created a class type board-row to hold three buttons with an "X" in them
+* Duplicated this board-row three times to create a 3x3 grid 
+* Edited the styles.css .square object to be 50 px x 50 px -> increasing the size of each square on the board 
+* Renamed Square() function to Board() 
+
+* Placed the button className="square" in a separate function called Square() that takes in a parameter value and inserts that as the value in the square. Replaced the buttons in the board-rows with Square() objects with different value parameters 
+* Made the Square buttons interactive - to change to a value "X" when clicked 
+   * Created a function handleClick() within Square(), and the onClick attribute of the returned button calls this function 
+   * Just setting value="X" inside handleClick() doesn't work -- returns an error redeclaring var value --, need to reset the component state 
+   * Create an array of values in Board() that contain the states for each button; create a function handleClick() that takes in parameter i -> index of the button on the board 
+       * onClick() -> creates a duplicate of the values Array, changes the newValues[i] to be "X", and then sets the array to be newValues 
+       * This initially led to an infinite loop -> had to change the function instead of being passed as a parameter, as a function call, through () => handleClick(i) 
+   * Modified this to have an if statement; created a new variable xIsNext that records whether or not X is the next player to move -> if yes, the handleClick() function changes the value to "X", if not, it changes to "O". 
+   * handleClick() updates this xIsNext variable every time 
+* Next created a function to check if either player has one. Created a 8 x 3 array that lists out all possible combinations that would result in a win for either player; then iterated over that list and checked whether any of the sets of buttons had the same value (not null). If Yes, then whatever value is at that winning combination is declared the Victor -> the game ends 
+* Had to modify Board() to update the status and call the determineVictor() function; also change the initial check to determine whether there is a victor, so that no buttons will be allowed to be pressed after a victor has been declared. 
+* Pass this status string into the final return statement, so that we have a status for each move. 
+
+* To add time travel -- going back to previous sets of values/states of the game -- move the states up one level, have the Game() function record XIsNext and have a array called history that stores all sets of values for all moves (max 9). Have a function handlePlay() in Game() that adds the current set of values to the history array and alternates values of xIsNext. Have Board() take in the current values and xIsNext and onPlay (the function that redirects to Game's value updating functionality) as parameters and execute them, instead of updating the variables internally. 
+* Create a map that allows to switch back to each value and update values of the current board accordingly -> each move in the history array is associated with a button that can be clicked to jump to that move. 

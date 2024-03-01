@@ -1,0 +1,58 @@
+Vishal Yathish
+COM SCI 35L
+
+			     Assignment 2
+
+2.1
+-------------------------------------------------------------------------
+(* (expt 2 (- 607 1)) (- (expt 2 607) 1)) -> 141053783706712069063207958086063189881486743514715667838838675999954867742652380114104193329037690251561950568709829327164087724366370087116731268159313652487450652439805877296207297446723295166658228846926807786652870188920867879451478364569313922060370695064736073572378695176473055266826253284886383715072974324463835300053138429460296575143368065570759537328128
+
+(+ (- 607 1) (log (- (expt 2 607) 1) 2)) -> 1213
+
+C-h k C-h k -> The first C-h k calls the function describe-key, which it is bound to (per the C-h b output from earlier). It prompts us to type in a keybinding to get more information on. When we type in C-h k again, it provides us the information on that specific key. This information can also be accessed through the C-h b output -> scrolling down to C-h k, and pressing enter on the function name.
+
+C-h k M-SPC -> C-h k (which is linked to the describe-key function) gives us a prompt to enter the key we want more information about. When we enter M-SPC, it provides us with the information for that keybinding and its connected function. As mentioned previously, this information can also be accessed through the C-h b page by scrolling down (or searching for) the M-SPC keybinding and pressing RET on the function name. 
+
+Homework
+-------------------------------------------------------------------------
+When invoked on an empty file, it will produce a IndexError: list index out of range. This is because the random.choice() function in the class definition requires the list of lines entered to be non-zero.
+
+When run on Python3 instead of Python2, it will produce an SyntaxError: invalid syntax. This is most likely due to syntax changes (most likely minor) between when the program was written to its current version. How exceptions are written has most likely been updated; however, it would work fine on Python2, the older version.
+
+Running my code in Python2 doesn't appear to make too much of a difference in terms of syntax/functioning. Everything seems to work well in either version.
+
+/usr/bin/python3: My program does not run successfully on this. It produces an error UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in position 57: ordinal not in range(128). It is likely that the local/cs/bin version has updated commands regarding processing ascii characters in the input streams. The error appears to be in the readlines() command, meaning that there was some non-ascii character that wasn't able to be processed successfully. 
+/usr/local/cs/bin/python3: 0.531
+/usr/local/cs/bin/shuf: 0.063
+
+Operating System/CPU Info:
+
+REDHAT_BUGZILLA_PRODUCT="Red Hat Enterprise Linux 8"
+REDHAT_BUGZILLA_PRODUCT_VERSION=8.5
+REDHAT_SUPPORT_PRODUCT="Red Hat Enterprise Linux"
+REDHAT_SUPPORT_PRODUCT_VERSION="8.5"
+
+Architecture:        x86_64
+CPU op-mode(s):      32-bit, 64-bit
+Byte Order:          Little Endian
+CPU(s):              4
+On-line CPU(s) list: 0-3
+Thread(s) per core:  1
+Core(s) per socket:  4
+Socket(s):           1
+NUMA node(s):        1
+Vendor ID:           GenuineIntel
+CPU family:          6
+Model:               85
+Model name:          Intel(R) Xeon(R) Silver 4116 CPU @ 2.10GHz
+Stepping:            4
+CPU MHz:             2095.075
+BogoMIPS:            4190.15
+Hypervisor vendor:   Microsoft
+Virtualization type: full
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            1024K
+L3 cache:            16896K
+NUMA node0 CPU(s):   0-3
+

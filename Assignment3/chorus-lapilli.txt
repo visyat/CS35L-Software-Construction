@@ -1,0 +1,52 @@
+Vishal Yathish
+
+Chorus Lapilli - Assignment 3
+
+* I started by opening a new version of the base React sandbox used in the Tic-Tac-Toe tutorial. Used npm install to ensure that all dependencies were properly configured, and npm start to display the base app. 
+* I created the Board() function, and created the 3x3 board set up as in Tic-Tac-Toe. I then edited the styles.css file to customize the squares to a color, size, and border width that I liked better 
+* I copied over the determineVictor() functions and handleClick() functions from Tic-Tac-Toe -> that functionality remains the same, we still want the game to end when we have three in a row. I retained the status checker from Tic Tac Toe as well. 
+* The next thing I did was place a limit on the number of new pieces that could be added. In essence, what we wanted to do was restrict the current Tic-Tac-Toe actions to the first three moves on either side. I thus created a new state variable called moveCount that would track the number of moves, and stop adding new pieces to the board when that count hit 6 (3 from each side, starting at 1).
+* I then wrapped the existing handleClick() function inside an if statement, checking if move count <= 6. 
+* The else condition for this if statement would contain our logic for moving pieces around and would require some additional code for checking validity of moves, etc. 
+
+* Within this else condition, each move takes 2 clicks. The first click removes a piece from a square, the second click moves the piece to another empty square. This requires an additional state variable to keep track of whether the current piece is being moved or not. 
+* I called this variable movingPiece, with a default value of -1, meaning that no piece is currently being moved. If a piece is clicked the first time, then movingPiece is reset to be i, the index of the square being clicked -- xIsNext is not updated, reflecting that it is still X's move, and values[i] is set to null (reflecting the piece being removed from that square). 
+* The second time after this a square is clicked (where movingPiece is not -1), the value at the new i value is set to "X" (or the current player), showing that the piece has been moved -- movingPiece is reset to -1, and xIsNext is incremented. 
+
+* At this point, chorus lapilli will be almost fully functioning. With the first three moves on both sides, it will function exactly like tic tac toe. After those 3 moves, you can click on one of your pieces to move it to another square. The first player to reach three in a row (in any direction) wins, and the game ends. 
+
+* However, there are still some issues here, and some restrictions that need to be implemented. The instructions require us to ensure that pieces can only be moved to adjacent squares (1 square in any direction), and that if a player has occupied the center square, then they must either move their piece out of it or win immediately. There are also some restrictions that need to be enforced on moving pieces: players cannot be allowed to overwrite other players' pieces or their own pieces. We also need to properly handle exceptions, and inform users that they have made an invalid move, and reset the board to the previous turn so that they can begin again without reloading the page entirely. 
+
+    1. Valid Moves -> to handle this, I created a helper function within Board() called checkValidMove(). First, it checks that the the new square is actually empty (to prevent over-writing of existing players' pieces) -> if not, then it returns False. Otherwise, it goes through all possible options of the original square and checks whether it is one of the possible spots for that square -> I manually set these. If it does match one of these, then it returns true. Otherwise, returns false. I called this function within the if else structure above -> after the second click. If the move is not valid, then it informs the user that the move they made was invalid by printing to the console -- using the console.log() function. If the move is valid, it allows you to set the value of the current square to be "X" or "O" depending on the xIsNext state. 
+
+    2. Saved Copies -> In order to allow the user to choose a new piece to move, and to prevent some other annoying effects, I created a new state variable to hold a copy of the values prior to the piece being moved being removed from the board (set to null). setSavedCopy(values.slice()); Then, after the console.log() statement above (hitting invalid moves), I reset the values of the board to hold the saved copy. 
+
+    3. Check if Center Square is Full -> This was relatively straightforward. if-else if-else statement -> if xIsNext and the center square of the pre-move values, savedCopy[4] is "X", return "X" -- indicating that X possesses the center square. Or if !xIsNext (the current move is O's) and the center square is "O" return "O". Otherwise, return null. Back in our if else structure in handleClick(), after the move was verified as valid and implemented, I checked whether checkCenterSquare() returned null or not. If yes, then it checks whether a victor can be determined from the newValues, or if the center square has been emptied in the newest move (newValues[4]==null). If neither of these are true, then it informs the user that an invalid move has occurred, and stops the move. It resets the board to be what it was prior to the move, and doesn't increment XIsNext -- allowing the user to repeat their move. 
+
+* With this logic built out, most of our code functioned as desired and expected. There were some bugs resulting in some implementation errors on my part (a missing exclamation mark and parentheses in some places, not properly handling null values, etc.). However, after these were identified and corrected, with sufficient testing, our program seemed to work quite well. 
+
+* the results of our npm pack --dry-run
+
+npm pack --dry-run
+npm notice 
+npm notice react.dev@0.0.0
+npm notice === Tarball Contents === 
+npm notice 609B  package.json          
+npm notice 218B  public/index.html     
+npm notice 4.9kB src/App.js            
+npm notice 256B  src/index.js          
+npm notice 977B  src/styles.css        
+npm notice 9.5kB test_chorus_lapilli.py
+npm notice === Tarball Details === 
+npm notice name:          react.dev                               
+npm notice version:       0.0.0                                   
+npm notice filename:      react.dev-0.0.0.tgz                     
+npm notice package size:  5.2 kB                                  
+npm notice unpacked size: 16.4 kB                                 
+npm notice shasum:        22f91d9b516e96fac8465b402789880ed8c2a472
+npm notice integrity:     sha512-SDFPtWIm2WAPj[...]MXFCozxWqkpdw==
+npm notice total files:   6                                       
+npm notice 
+react.dev-0.0.0.tgz
+
+-> Seemed to run successfully. 
