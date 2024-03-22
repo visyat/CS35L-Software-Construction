@@ -1,0 +1,5 @@
+#!/bin/sh
+#Uses the git diff command to find the differences between releases.
+#Takes in 2 arguments, separated by a space -> use $1 and $2 to insert them into a string
+#Separate the two values with .. to signify revision range. xx
+git diff "$1..$2"

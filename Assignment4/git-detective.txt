@@ -1,0 +1,43 @@
+Vishal Yathish
+
+		  Assignment 4 Lab B: Git Detective
+
+The first thing I did was look in the v2.39 Release Notes to find the original note. I found it under the Fixes since v2.38 section, thus confirming that the fix was a new commit in v2.39 (different from v2.38). This means that it should be much easier to find using a diff function call between the tags.
+
+First, I used the following command to find the differences between the two versions, and search that diff output for the string 'merge-tree' to try and narrow down where that change might have been implemented.
+
+git diff v2.38.5..v2.39.0 | git grep merge-tree
+
+This output was quite long, but we were able to ignore most of it by ignoring documentation files, txt files, builtins, etc.
+
+The first edited file that appeared to have changes relevant to our problem was t/t4301-merge-tree-write-tree.sh.
+
+I used the following command to find all commits to that file, and search the commit history for the string 'read-only.'
+
+git log t/t4301-merge-tree-write-tree.sh | grep -C 10 'read-only'
+
+The result was the following commit.
+
+commit 0b55d930a69692c7f4e7b90e35fa41f6c46df4bc
+Author: Johannes Schindelin <Johannes.Schindelin@gmx.de>
+Date:   Wed Sep 28 07:29:21 2022 +0000
+
+    merge-ort: fix segmentation fault in read-only repositories
+    
+    If the blob/tree objects cannot be written, we really need the merge
+    operations to fail, and not to continue (and then try to access the tree
+    object which is however still set to `NULL`).
+    
+    Let's stop ignoring the return value of `write_object_file()` and
+    `write_tree()` and set `clean = -1` in the error case.
+    
+    Reviewed-by: Elijah Newren <newren@gmail.com>
+    Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+
+This appears to be the commit we are looking for: a fix for the segfault in read-only repositories.
+
+I then opened the commit patch file with the following command.
+
+git format-patch -1 0b55d930a69692c7f4e7b90e35fa41f6c46df4bc
+
+The code changes seem to solve the error by adding if statements at almost every function (before performing any tasks), to check if the user is able to write using the functions write_tree() and write_completed_directory() -- which were also implemented in this commit. At the end of the file, they added a test to ensure that the code fails gracefully if the repository is read-only; test_expect_success SANITY 'merge-ort fails gracefully in a read-only repository'.

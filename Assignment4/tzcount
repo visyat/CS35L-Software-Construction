@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#if a revision range is provided, then it inserts it into the git log function call
+if [ ! -z "$1" ]
+then
+    #runs git log function to print out commit history
+    #use grep to search for lines with the string "Date:"; each commit has this line at the top - contains commit date and time zone
+    #uses awk to get the last element from each line (contains the time zone)
+    #uses uniq -c to categorize them by unique values; however, this will only group together adjacent matching values, need to use numeric sort to keep all like values together
+    #uses another awk to rearrange the order of the columns to meet the desired format 
+    git log "$1" | grep 'Date:' | awk '{print $NF}' | sort -n | uniq -c | awk '{print $2, $1}'
+#if no revision range is provided, then it defaults to HEAD
+else
+    git log | grep 'Date:' | awk '{print $NF}' | sort -n | uniq -c | awk '{print $2, $1}'
+fi

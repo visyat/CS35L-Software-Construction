@@ -1,0 +1,43 @@
+Vishal Yathish
+
+		  Assignment 4 | Lab A | Question 7
+
+The first thing I did was look at all commits that added or removed the relevant text: "Even newspaper reports present contradictory information."
+
+To do this, I used the following commands ...
+
+INPUT_TEXT="Even newspaper reports present contradictory information."
+#Find the commit that added the selected text
+git log -S "$INPUT_TEXT"
+#Find the exact place in the commit where the text was added
+git log --patch -S "$INPUT_TEXT" | grep -C 10 "$INPUT_TEXT"
+
+First, we found the commit that added the selected text using the git log -S option, to search for that string (saved to a variable for brevity). We then used the --patch option to find the exact changes that added the text, and used an additional grep function to filter the entire commit for that specific addition. 
+
+This search produced only one commit (c12b432741eed9a422fbf99fa27af6e7a941d88b), from  Thu Dec 21 11:43:42 1995 -0500. 
+
+This was the text around and including our selected string, for context.
+
+-# From Bob Devine (January 28, 1988):
+-# Michigan didn't observe DST from 1968 to 1973.
++# Indiana
++#
++# From Paul Eggert (1995-12-19):
++# Indiana generally observes either EST all year, or CST/CDT,
++# but areas near Cincinnati and Louisville use those cities' timekeeping
++# and in 1969 and 1970 the whole state observed daylight time;
++# and there are other exceptions as noted below.
++# Shanks partitions Indiana into 345 regions, each with its own time history,
++# and writes ``Even newspaper reports present contradictory information.''
++# Fortunately, most of the complexity occurred before our cutoff date of 1970.
++#
++# Since 1970, EST-only Indiana has been like America/Indianapolis,
++# with exceptions noted below for Crawford, Starke, and Switzerland counties.
++# The parts of Indiana not listed below have been like America/Chicago,
++# America/Louisville, or America/New_York.
++#
++# Other than Indianapolis, the Indiana place names are so nondescript
++# that they would be ambiguous if we left them at the `America' level.
++# So we reluctantly put them all in a subdirectory `America/Indiana'.
+
+From these changes, we can see that this string was contributed to the tzdb files by Professor Eggert on December 19, 1995, regarding information on regional time zone history in the state of Indiana. He is quoting a comment made by Thomas G. Shanks, an American time zone history researcher - citing Shanks as the source for the statement. This suggests that the editor is not in violation of copyright laws since proper citations are used. 

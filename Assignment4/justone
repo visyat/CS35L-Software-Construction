@@ -1,0 +1,8 @@
+#!/bin/sh
+#Use diff function to find the differences between two versions
+#HEAD is the current commit, HEAD^ by convention denotes the commit just before HEAD
+#Using the .. to signfify a revision range input for the diff function. 
+git diff HEAD^..HEAD
+
+#An alernate way to do this using log --patch to produce the first patch file; the code changed from the last commit
+#git log --patch -1
