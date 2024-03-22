@@ -8,4 +8,3 @@ All assignments made during COM SCI 35L with Professor Paul Eggert.
 | 3. Chorus lapilli | 
 | 4. Basic change management |
 | 5. Git repository organization |
-| 6. Low-level refactoring and performance |
